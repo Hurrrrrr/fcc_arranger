@@ -9,6 +9,11 @@ import re
 
 # output
 
+INVALID_OPERATORS = "\/|\*"
+VALID_OPERAND = "^\d{1,4}$"
+
+
+
 def validate_input(list_of_problems, display_results=False):
 
     if (len(list_of_problems) < 2):
@@ -19,19 +24,24 @@ def validate_input(list_of_problems, display_results=False):
 
     print(validate_list(list_of_problems))
 
+
+
 def validate_list(my_list):
 
     for problem in my_list:
 
-        split_list = my_list.split()
+        split_list = problem.split()
 
-        if re.search(VALID_OPERAND, split_list[0]) == False:
+        if not re.match(VALID_OPERAND, split_list[0]):
+            print("digit error")
             return "Error: Numbers must only contain digits."
 
-        if re.search(INVALID_OPERATORS, split_list[1]) == True:
+        if re.match(INVALID_OPERATORS, split_list[1]):
+            print("operand error")
             return "Error: Operator must be '+' or '-'."
 
-        if re.search(VALID_OPERAND, split_list[2]) == False:
+        if not re.match(VALID_OPERAND, split_list[2]):
+            print("digit error")
             return "Error: Numbers must only contain digits."
     
     return True
@@ -39,50 +49,8 @@ def validate_list(my_list):
 
 
 
-INVALID_OPERATORS = "\/|\*"
-VALID_OPERAND = "\d{1,4}"
-
-test_input = input("Enter test input: ")
-
-print(validate_problem(test_input))
 
 
+test_input = ["32 + 698", "3801 - 2", "45 + 43", "123 + 49"]
 
-# valid_regex_pattern = "^\d{1,4}[\-\+]\d{1,4}$"
-
-
-
-# def validate_operand(operand):
-
-#     if (re.search(valid_operand, replaced)) == False:
-#         return "Error: Numbers must only contain digits."
-
-
-# def arithmetic_arranger(problems, show_answer=False):
-
-#     if len(problems) > 5:
-#         return "Error: Too many problems."
-
-#     if len(problems) < 1:
-#         return "Error: Too many problems."
-    
-
-
-#     arranged_problems = ""
-
-#     return arranged_problems
-
-# def validate_problem(problem):
-
-#     if (re.search(invalid_operators, problem)):
-#         return "Error: Operator must be '+' or '-'."
-
-#     replaced = problem.replace(" ", "")
-
-#     if (re.search(valid_operand, replaced)) == False:
-#         return "Error: Numbers must only contain digits."
-
-    # if (re.search(valid_regex_pattern, replaced)):
-    #     return True
-    # else:
-    #     return False
+print(validate_input(test_input))
