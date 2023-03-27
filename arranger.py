@@ -12,7 +12,7 @@ import re
 INVALID_OPERATORS = "\/|\*"
 VALID_OPERAND = "^\d{1,4}$"
 
-
+ 
 
 def validate_input(list_of_problems, display_results=False):
 
@@ -22,7 +22,13 @@ def validate_input(list_of_problems, display_results=False):
     if (len(list_of_problems) > 5):
         return "Error: Too many problems."
 
-    print(validate_list(list_of_problems))
+    if type(display_results) != bool:
+        return "Error: Results display flag must be True or False."
+
+    if (validate_list(list_of_problems)):
+        return True
+
+    return False
 
 
 
@@ -48,9 +54,43 @@ def validate_list(my_list):
 
 
 
+def parse_problem(problem):
+
+    operator1 = 0
+    operator2 = 0
+    split_problem = problem.split()
+    parsed = []
+
+    for i in split_problem:
+        if i.isdigit():
+            parsed.append(int(i))
+        else:
+            parsed.append(i)
+    
+    return parsed
+
+
+def find_problems_lengths(my_list):
+
+    max_lengths = []
+    parsed = []
+    
+    for problem in my_list:
+        parsed.append(parse_problem(problem))
+
+    for prob in parsed:
+        max_lengths.append(len(max(problem, key=len)))
+    
+    return max_lengths
+
+
+def print_output(my_list):
+    return
 
 
 
 test_input = ["32 + 698", "3801 - 2", "45 + 43", "123 + 49"]
 
 print(validate_input(test_input))
+
+print(find_problems_lengths(test_input))
