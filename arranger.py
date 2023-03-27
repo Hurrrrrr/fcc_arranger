@@ -79,7 +79,7 @@ def find_problems_lengths(my_list):
         parsed.append(parse_problem(problem))
 
     for prob in parsed:
-        max_lengths.append(len(max(problem, key=len)))
+        max_lengths.append(len(max(str(prob), key=len)))
     
     return max_lengths
 
