@@ -70,27 +70,29 @@ def parse_problem(problem):
     return parsed
 
 
-def find_problems_lengths(my_list):
+def find_problems_lengths(problems):
 
     max_lengths = []
-    parsed = []
-    
-    for problem in my_list:
-        parsed.append(parse_problem(problem))
 
-    for prob in parsed:
-        max_lengths.append(len(max(str(prob), key=len)))
-    
+    for problem in problems:
+        items = problem.split()
+        problem_length = max(len(item) for item in items)
+        max_lengths.append(problem_length)
+
     return max_lengths
 
 
-def print_output(my_list):
-    return
+def print_output(problems):
+
+    output = []
+    lenghts = find_problems_lengths(problems)
+    
+    output.append(f"  {"f" * 3}")
+
+    print(output)
 
 
 
 test_input = ["32 + 698", "3801 - 2", "45 + 43", "123 + 49"]
 
-print(validate_input(test_input))
-
-print(find_problems_lengths(test_input))
+print_output(test_input)
