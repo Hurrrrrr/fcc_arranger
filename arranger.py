@@ -11,6 +11,7 @@ import re
 
 INVALID_OPERATORS = "\/|\*"
 VALID_OPERAND = "^\d{1,4}$"
+MAX_LENGTH = 4
 
  
 
@@ -73,21 +74,48 @@ def parse_problem(problem):
 def find_problems_lengths(problems):
 
     max_lengths = []
+    min_lengths = []
+    differential_lengths = []
 
     for problem in problems:
         items = problem.split()
-        problem_length = max(len(item) for item in items)
-        max_lengths.append(problem_length)
+        max_problem_length = max(len(item) for item in items)
+        max_lengths.append(max_problem_length)
 
-    return max_lengths
+    # more complicated than finding max length because we have to ignore operands
+    for problem in problems:
+
+        items = problem.split()
+        min_problem_length = MAX_LENGTH
+
+        for i in range(len(items)):
+            if items[i].isdigit():
+                if len(items[i]) < min_problem_length:
+                    min_problem_length = len(items[i])
+
+        min_lengths.append(min_problem_length)
+
+    for i in range(len(max_lengths)):
+        differential_lengths.append(max_lengths[i] - min_lengths[i])
+
+    return differential_lengths
 
 
 def print_output(problems):
 
     output = []
     lenghts = find_problems_lengths(problems)
-    
-    output.append(f"  {"f" * 3}")
+    parsed = []
+    for problem in problems:
+        parsed.append(parse_problem(problem))
+        
+    output.append("  ")
+    if len(str(parsed[0][0])) < len(str(parsed[0][2])):
+        for i in range(lenghts[0]):
+            output.append(" ")
+    output.append(parsed[0][0])
+    output.append("    ")
+    "".join(output)
 
     print(output)
 
