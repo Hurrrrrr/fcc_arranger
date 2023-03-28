@@ -57,8 +57,6 @@ def validate_list(my_list):
 
 def parse_problem(problem):
 
-    operator1 = 0
-    operator2 = 0
     split_problem = problem.split()
     parsed = []
 
@@ -111,22 +109,60 @@ def calc_dash_count(problems):
 
     return dash_count
 
+def calc_answers(parsed_problems):
 
-def print_output(problems):
+    answers = []
+
+    for problem in parsed_problems:
+        operand = problem[1]
+        if operand == "+":
+            answers.append(int(problem[0]) + int(problem[2]))
+        else:
+            answers.append(int(problem[0]) - int(problem[2]))
+    
+    return answers
+
+
+
+def find_answers_lengths(answers):
+
+    lengths = []
+
+    for answer in answers:
+            lengths.append(len(str(answer)))
+    
+    return lengths
+
+
+
+def find_answers_spaces(length_of_answers, dashes):
+
+    space_counts = []
+
+    for i in range(len(length_of_answers)):
+        space_counts.append(dashes[i] - length_of_answers[i])
+    
+    return space_counts
+
+
+
+def print_output(problems, show_answers=False):
 
     output_list = []
-    lenghts = find_problems_lengths(problems)
+    lengths = find_problems_lengths(problems)
     parsed = []
     dashes = calc_dash_count(problems)
     for problem in problems:
         parsed.append(parse_problem(problem))
     num_of_problems = len(parsed)
+    calculated = calc_answers(parsed)
+    answer_lengths = find_answers_lengths(calculated)
 
     # output for first line
     for i in range(num_of_problems):    
         output_list.append("  ")
         if len(parsed[i][0]) < len(parsed[i][2]):
-            for j in range(lenghts[i]):
+            for j in range(lengths[i]):
                 output_list.append(" ")
         output_list.append(parsed[i][0])
         if (i + 1) < num_of_problems:
@@ -139,7 +175,7 @@ def print_output(problems):
         output_list.append(parsed[k][1])
         output_list.append(" ")
         if len(parsed[k][2]) < len(parsed[k][0]):
-            for l in range(lenghts[k]):
+            for l in range(lengths[k]):
                 output_list.append(" ")
         output_list.append(parsed[k][2])
         if (k + 1) < num_of_problems:
@@ -156,12 +192,30 @@ def print_output(problems):
         else:
             output_list.append("\n")
 
+
+    #output for fourth line (optional)
+    for p in range(num_of_problems):
+        for n in range(find_answers_spaces(answer_lengths, dashes)[p]):
+            output_list.append(" ")
+        output_list.append(str(calculated[p]))
+        if (p + 1) < num_of_problems:
+            output_list.append("    ")
+        else:
+            output_list.append("\n")
+        
+
+        
+
+    # refactor this for testing
     asdf = "".join(output_list)
 
     print(asdf)
+    print("answers:", calculated)
+    print("answer character count:", find_answers_lengths(calculated))
+    print("number of spaces to print:", find_answers_spaces(answer_lengths, dashes))
 
 
 
-test_input = ["32 + 698", "3801 - 2", "45 + 43", "123 + 49"]
+test_input = ["32 + 698", "2 - 3801", "85 + 43", "123 + 49"]
 
 print_output(test_input)
