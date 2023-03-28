@@ -63,9 +63,6 @@ def parse_problem(problem):
     parsed = []
 
     for i in split_problem:
-        if i.isdigit():
-            parsed.append(int(i))
-        else:
             parsed.append(i)
     
     return parsed
@@ -100,24 +97,68 @@ def find_problems_lengths(problems):
 
     return differential_lengths
 
+def calc_dash_count(problems):
+
+    dash_count = []
+
+    for problem in problems:
+        max_digits = 0
+        split_problem = problem.split()
+        for item in split_problem:
+            if (len(item)) > max_digits:
+                max_digits = (len(item))
+        dash_count.append(max_digits + 2)
+
+    return dash_count
+
 
 def print_output(problems):
 
-    output = []
+    output_list = []
     lenghts = find_problems_lengths(problems)
     parsed = []
+    dashes = calc_dash_count(problems)
     for problem in problems:
         parsed.append(parse_problem(problem))
-        
-    output.append("  ")
-    if len(str(parsed[0][0])) < len(str(parsed[0][2])):
-        for i in range(lenghts[0]):
-            output.append(" ")
-    output.append(parsed[0][0])
-    output.append("    ")
-    "".join(output)
+    num_of_problems = len(parsed)
 
-    print(output)
+    # output for first line
+    for i in range(num_of_problems):    
+        output_list.append("  ")
+        if len(parsed[i][0]) < len(parsed[i][2]):
+            for j in range(lenghts[i]):
+                output_list.append(" ")
+        output_list.append(parsed[i][0])
+        if (i + 1) < num_of_problems:
+            output_list.append("    ")
+        else:
+            output_list.append("\n")
+    
+    #output for second line
+    for k in range(num_of_problems):
+        output_list.append(parsed[k][1])
+        output_list.append(" ")
+        if len(parsed[k][2]) < len(parsed[k][0]):
+            for l in range(lenghts[k]):
+                output_list.append(" ")
+        output_list.append(parsed[k][2])
+        if (k + 1) < num_of_problems:
+            output_list.append("    ")
+        else:
+            output_list.append("\n")
+    
+    #output for third line
+    for m in range(num_of_problems):
+        for n in range(dashes[m]):
+            output_list.append("-")
+        if (m + 1) < num_of_problems:
+            output_list.append("    ")
+        else:
+            output_list.append("\n")
+
+    asdf = "".join(output_list)
+
+    print(asdf)
 
 
 
